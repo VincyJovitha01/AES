@@ -14,52 +14,57 @@ AES operates on a 4 × 4 column-major order array of bytes, termed the state
 
 # PROGRAM:
 ```
-//Name:VINCY JOVITHA V
-//Reg no:212223230242
+// Name: VINCY JOVITHA V
+// Reg.no: 212223230242
 
-#include <stdio.h> 
-#include <string.h> 
-void simpleAESEncrypt(char *plaintext, char *key, char*ciphertext) 
-{ 
-int i; 
-for (i = 0; i < strlen(plaintext); i++) 
-{ 
-ciphertext[i] = plaintext[i] ^ key[i % strlen(key)]; 
-} 
-ciphertext[i] = '\0'; 
-} 
-void simpleAESDecrypt(char *ciphertext, char *key, char *decryptedText) 
-{ 
-int i; 
-for (i = 0; i < strlen(ciphertext); i++) 
-{
-                                                               
-decryptedText[i] = ciphertext[i] ^ key[i % strlen(key)]; 
-} 
-decryptedText[i] = '\0'; 
-} 
-void printASCII(char *ciphertext) 
-{ 
-printf("Encrypted Message (ASCII values): "); 
-for (int i = 0; i < strlen(ciphertext); i++) 
-{ 
-printf("%d ", (unsigned char)ciphertext[i]); 
-} 
-printf("\n"); 
-} 
-int main() 
-{ 
-char plaintext[100], key[100], ciphertext[100], decryptedText[100]; 
-printf("Enter the plaintext: "); 
-scanf("%s", plaintext); 
-printf("Enter the key: ");  
-scanf("%s", key);  
-simpleAESEncrypt(plaintext, key, ciphertext); 
-printASCII(ciphertext);  
-simpleAESDecrypt(ciphertext, key, decryptedText); 
-printf("Decrypted Message: %s\n", decryptedText); 
-return 0; 
+#include <stdio.h>
+#include <string.h>
+
+// Simple AES-like Encryption
+void aesEncrypt(char *plain, char *key, char *cipher, int len) {
+    for (int i = 0; i < len; i++) {
+        cipher[i] = plain[i] ^ key[i % strlen(key)];
+    }
+    cipher[len] = '\0';
 }
+
+// Simple AES-like Decryption
+void aesDecrypt(char *cipher, char *key, char *plain, int len) {
+    for (int i = 0; i < len; i++) {
+        plain[i] = cipher[i] ^ key[i % strlen(key)];
+    }
+    plain[len] = '\0';
+}
+
+int main() {
+    char msg[100], key[100];
+    char enc[100], dec[100];
+
+    printf("Enter message: ");
+    fgets(msg, 100, stdin);
+    msg[strcspn(msg, "\n")] = '\0';
+
+    printf("Enter key: ");
+    fgets(key, 100, stdin);
+    key[strcspn(key, "\n")] = '\0';
+
+    int len = strlen(msg);
+
+    // Encryption
+    aesEncrypt(msg, key, enc, len);
+    printf("Encrypted (Hex): ");
+    for (int i = 0; i < len; i++) {
+        printf("%02X ", (unsigned char)enc[i]);
+    }
+    printf("\n");
+
+    // Decryption
+    aesDecrypt(enc, key, dec, len);
+    printf("Decrypted Message: %s\n", dec);
+
+    return 0;
+}
+
 ```
 # OUTPUT:
 <img width="686" height="266" alt="image" src="https://github.com/user-attachments/assets/3446e775-4cde-46ba-a61f-d3dcc65d17d0" />
